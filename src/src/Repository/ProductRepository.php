@@ -16,6 +16,16 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    public function findByType(int $typeId): array
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.model', 'm')
+            ->andWhere('m.type = :typeId')
+            ->setParameter('typeId', $typeId)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Product[] Returns an array of Product objects
     //     */
