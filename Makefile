@@ -22,3 +22,5 @@ phpunit:
 	@docker compose exec ${PHP_SERVICE} php bin/console doctrine:database:create --env=test
 	@docker compose exec ${PHP_SERVICE} php bin/console doctrine:migrations:migrate --env=test --no-interaction
 	@docker compose exec ${PHP_SERVICE} php vendor/bin/phpunit $(ARGUMENTS) --testdox
+migrate:
+	@docker compose exec ${PHP_SERVICE} php bin/console doctrine:migrations:migrate --no-interaction

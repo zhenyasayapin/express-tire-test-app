@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ModelRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\UniqueConstraint(name: 'unique_model_name', columns: ['name', 'manufacturer_id', 'type_id'])]
 #[ORM\Entity(repositoryClass: ModelRepository::class)]
 class Model
 {

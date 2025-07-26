@@ -7,6 +7,8 @@ use App\Factory\ManufacturerFactory;
 use App\Factory\ModelFactory;
 use App\Factory\ProductFactory;
 use App\Factory\TypeFactory;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Faker\Factory;
 use Zenstruck\Foundry\Test\Factories;
 
 class ProductTest extends ApiTestCase
@@ -37,5 +39,33 @@ class ProductTest extends ApiTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertCount(count(json_decode($response->getContent())), $products);
+    }
+
+    public function testModelUniqueness()
+    {
+        $this->expectException(UniqueConstraintViolationException::class);
+
+        $type = TypeFactory::createOne();
+        $manufacturer = ManufacturerFactory::createOne();
+        $modelName = Factory::create()->name();
+
+        ModelFactory::createmany(2, [
+            'name' => $modelName,
+            'type' => $type,
+            'manufacturer' => $manufacturer,
+        ]);
+    }
+
+    public function testProductUniqueness()
+    {
+        $this->expectException(UniqueConstraintViolationException::class);
+
+        $model = ModelFactory::createOne();
+        $productName = Factory::create()->name();
+
+        ProductFactory::createmany(2, [
+            'name' => $productName,
+            'model' => $model
+        ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\UniqueConstraint(name: 'unique_product_name_model', columns: ['name', 'model_id'])]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
