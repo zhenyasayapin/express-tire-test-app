@@ -24,3 +24,8 @@ phpunit:
 	@docker compose exec ${PHP_SERVICE} php vendor/bin/phpunit $(ARGUMENTS) --testdox
 migrate:
 	@docker compose exec ${PHP_SERVICE} php bin/console doctrine:migrations:migrate --no-interaction
+db-rebuild:
+	@docker compose exec ${PHP_SERVICE} php bin/console doctrine:database:drop --force --if-exists
+	@docker compose exec ${PHP_SERVICE} php bin/console doctrine:database:create
+	@docker compose exec ${PHP_SERVICE} php bin/console doctrine:migrations:migrate --no-interaction
+	@docker compose exec ${PHP_SERVICE} php bin/console doctrine:fixtures:load --no-interaction
