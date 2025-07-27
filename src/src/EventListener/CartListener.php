@@ -23,13 +23,11 @@ final class CartListener
         $session = $event->getRequest()->getSession();
         $cartId = $session->get('cart_id');
 
-        if (null === $cartId) {
+        if (null === $cartId || !$cart = $this->cartRepository->find($cartId)) {
             $cart = new Cart();
 
             $this->entityManager->persist($cart);
             $this->entityManager->flush();
-        } else {
-            $cart = $this->cartRepository->find($cartId);
         }
 
         $session->set('cart_id', $cart->getId());
