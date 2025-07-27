@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -41,13 +42,8 @@ final class CartController extends AbstractController
     }
 
     #[Route('/cart', name: 'app_cart_get', methods: ['GET'])]
-    public function getCart(EntityManagerInterface $em): JsonResponse
+    public function getCart(EntityManagerInterface $em, RequestStack $requestStack): JsonResponse
     {
-        $cart = new Cart();
-
-        $em->persist($cart);
-        $em->flush();
-
-        return $this->json($cart);
+        return $this->json($this->cartService->getCart());
     }
 }

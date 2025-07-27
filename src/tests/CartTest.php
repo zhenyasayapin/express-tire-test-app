@@ -52,4 +52,14 @@ class CartTest extends ApiTestCase
             'count' => 0
         ]);
     }
+
+    public function testCartIdDoesntChange(): void
+    {
+        $client = static::createClient();
+
+        $firstResponse = json_decode($client->request('GET', '/cart')->getContent());
+        $secondResponse = json_decode($client->request('GET', '/cart')->getContent());
+
+        $this->assertEquals($firstResponse->id, $secondResponse->id);
+    }
 }

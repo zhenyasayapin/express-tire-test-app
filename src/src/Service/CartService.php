@@ -7,19 +7,21 @@ use App\Entity\Cart;
 use App\Entity\CartItem;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CartService
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ProductRepository $productRepository,
+        private readonly RequestStack $requestStack
     )
     {
     }
 
     public function addProductToCart(AddProductToCartDTO $dto): Cart
     {
-        $cart = new Cart();
+        $cart = $this->getCart();
         $cartItem = new CartItem();
 
         $product = $this->productRepository->find($dto->productId);
@@ -32,5 +34,11 @@ class CartService
         $this->entityManager->flush();
 
         return $cart;
+    }
+
+    public function getCart(): Cart
+    {
+        $request = $this->requestStack->getCurrentRequest();
+        return $request->attributes->get('cart');
     }
 }
