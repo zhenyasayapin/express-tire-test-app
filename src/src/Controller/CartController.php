@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\DTO\AddProductToCartDTO;
-use App\Entity\Cart;
+use App\DTO\RemoveProductFromCartDTO;
 use App\Form\AddProductToCartFormType;
+use App\Form\RemoveProductFromCartFormType;
 use App\Helper\FormHelper;
 use App\Repository\ProductRepository;
 use App\Service\CartService;
@@ -39,6 +40,23 @@ final class CartController extends AbstractController
         $formDTO = $form->getData();
 
         return $this->json($this->cartService->addProductToCart($formDTO));
+    }
+
+    #[Route('/cart', name: 'app_cart_remove_item', methods: ['DELETE'])]
+    public function removeItem(Request $request, ProductRepository $productRepository): Response
+    {
+        $form = $this->createForm(RemoveProductFromCartFormType::class);
+
+        $form->submit($request->getPayload()->all());
+
+        if (!$form->isValid()) {
+            return $this->json(['errors' => FormHelper::getFormErrors($form)], Response::HTTP_BAD_REQUEST);
+        }
+
+        /** @var RemoveProductFromCartDTO $formDTO */
+        $formDTO = $form->getData();
+
+        return $this->json($this->cartService->removeProductFromCart($formDTO));
     }
 
     #[Route('/cart', name: 'app_cart_get', methods: ['GET'])]

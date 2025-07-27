@@ -62,4 +62,33 @@ class CartTest extends ApiTestCase
 
         $this->assertEquals($firstResponse->id, $secondResponse->id);
     }
+
+    public function testRemoveItemFromCart()
+    {
+        $client = static::createClient();
+        $productId = ProductFactory::createOne()->getId();
+
+        $response = $client->request('GET', '/cart');
+
+        $initialCart = json_decode($response->getContent());
+
+        $client->request('POST', '/cart', [
+            'json' => [
+                'productId' => $productId
+            ]
+        ]);
+
+        $client->request('DELETE', '/cart', [
+            'json' => [
+                'productId' => $productId
+            ]
+        ]);
+
+        $response = $client->request('GET', '/cart');
+
+        $resultCart = json_decode($client->request('GET', '/cart')->getContent());
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount($initialCart->count, $resultCart->items);
+    }
 }

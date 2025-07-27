@@ -33,7 +33,7 @@ class Cart
 
     public function getCount(): int
     {
-        return 0;
+        return $this->items->count();
     }
 
     public function getTotalPrice(): float
@@ -54,18 +54,6 @@ class Cart
         if (!$this->items->contains($item)) {
             $this->items->add($item);
             $item->setCart($this);
-        }
-
-        return $this;
-    }
-
-    public function removeItem(CartItem $item): static
-    {
-        if ($this->items->removeElement($item)) {
-            // set the owning side to null (unless already changed)
-            if ($item->getCart() === $this) {
-                $item->setCart(null);
-            }
         }
 
         return $this;
