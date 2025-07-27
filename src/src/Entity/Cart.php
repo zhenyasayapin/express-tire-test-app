@@ -38,7 +38,11 @@ class Cart
 
     public function getTotalPrice(): float
     {
-        return 0.0;
+        return array_reduce(
+            $this->items->toArray(),
+            fn(float $carry, CartItem $item) => $carry + ($item->getProduct()->getPrice() ?? 0),
+            0.0
+        );
     }
 
     /**

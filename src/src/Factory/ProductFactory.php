@@ -34,6 +34,7 @@ final class ProductFactory extends PersistentProxyObjectFactory
         return [
             'model' => ModelFactory::new(),
             'name' => self::faker()->name(),
+            'price' => self::faker()->randomFloat(2 ),
         ];
     }
 
