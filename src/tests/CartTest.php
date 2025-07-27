@@ -36,4 +36,20 @@ class CartTest extends ApiTestCase
 
         $this->assertEquals($productId, $cartItem->getProduct()->getId());
     }
+
+    public function testGetCart(): void
+    {
+        $client = static::createClient();
+
+        $response = $client->request('GET', '/cart');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertGreaterThanOrEqual(1, json_decode($response->getContent())->id);
+        $this->assertJsonContains([
+            'id' => json_decode($response->getContent())->id,
+            'items' => [],
+            'totalPrice' => 0,
+            'count' => 0
+        ]);
+    }
 }
