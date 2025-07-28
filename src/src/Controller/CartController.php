@@ -25,7 +25,7 @@ final class CartController extends AbstractController
     {
     }
 
-    #[Route('/cart', name: 'app_cart_add_item', methods: ['POST'])]
+    #[Route('/cart/item', name: 'app_cart_add_item', methods: ['POST'])]
     public function addItem(Request $request, ProductRepository $productRepository): Response
     {
         $form = $this->createForm(AddProductToCartFormType::class);
@@ -42,7 +42,7 @@ final class CartController extends AbstractController
         return $this->json($this->cartService->addProductToCart($formDTO));
     }
 
-    #[Route('/cart', name: 'app_cart_remove_item', methods: ['DELETE'])]
+    #[Route('/cart/item', name: 'app_cart_remove_item', methods: ['DELETE'])]
     public function removeItem(Request $request, ProductRepository $productRepository): Response
     {
         $form = $this->createForm(RemoveProductFromCartFormType::class);

@@ -22,7 +22,7 @@ class CartTest extends ApiTestCase
 
         $client = static::createClient();
 
-        $response = $client->request('POST', '/cart', [
+        $response = $client->request('POST', '/cart/item', [
             'json' => [
                 'productId' => $productId
             ]
@@ -78,7 +78,7 @@ class CartTest extends ApiTestCase
             ]
         ]);
 
-        $client->request('DELETE', '/cart', [
+        $client->request('DELETE', '/cart/item', [
             'json' => [
                 'productId' => $productId
             ]
